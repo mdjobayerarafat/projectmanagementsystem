@@ -1,11 +1,13 @@
 package com.mdjobayerarafat.projectmanagementsystem.config;
 
+import com.mdjobayerarafat.projectmanagementsystem.JwtTokenValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -41,10 +43,19 @@ public class AppConfig {
                         "http://localhost:4200"
                 ));
                 ctg.setAllowedMethods(Collections.singletonList("*"));
+                ctg.setAllowCredentials(true);
+                ctg.setAllowedHeaders(Collections.singletonList("*"));
+                ctg.setExposedHeaders(Arrays.asList("Authorization"));
+                ctg.setMaxAge(3600L);
+
 
                 return ctg;
             }
         };
+    }
+    @Bean
+    BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }
 
